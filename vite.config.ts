@@ -10,7 +10,23 @@ export default defineConfig({
   // plugins: [react(), tsconfigPaths()],
   plugins: [react()],
   server: {
-    port: 3080,
+    port: 8060,
+    proxy: {
+      'https://api.themoviedb.org/3': {
+        target: 'https://api.themoviedb.org/3',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^https:\/\/api\.themoviedb\.org\/3/, ''),
+        secure: false,
+        // ws: true, // 찾아보니 websocket할 때 필요한 부분이라고 함
+      },
+      '/3': {
+        target: 'https://api.themoviedb.org/3',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/3/, ''),
+        secure: false,
+        // ws: true, // 찾아보니 websocket할 때 필요한 부분이라고 함
+      },
+    },
   },
   resolve: {
     alias: [
