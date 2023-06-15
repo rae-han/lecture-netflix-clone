@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 export const Wrapper = styled.div`
   background: black;
   padding-bottom: 200px;
+  cursor: pointer;
 `;
 
 export const Loader = styled.div`
@@ -34,7 +35,7 @@ export const Overview = styled.p`
 `;
 
 export const Slider = styled.div`
-  position: relative;
+  //position: relative;
   top: -100px;
 `;
 
@@ -112,3 +113,26 @@ export const rowVariants = {
     x: -window.outerWidth - 5,
   },
 };
+
+export const Overlay = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  background-color: red;
+`;
+
+export const MovieModal = styled(motion.div)`
+  position: fixed;
+  width: 40vw;
+  height: 80vh;
+  top: 50%;
+  left: 50%;
+  background-color: blue;
+  transform: translate(-50%, -50%);
+`;

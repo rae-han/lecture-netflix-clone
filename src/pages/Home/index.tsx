@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion, useScroll } from 'framer-motion';
+import { useMatch, useNavigate } from 'react-router-dom';
 
 import DefaultLayout from '../../layouts/DefaultLayout';
 import { useMovies } from '../../hooks/queries/movie.ts';
@@ -10,6 +11,8 @@ import {
   Info,
   infoVariants,
   Loader,
+  MovieModal,
+  Overlay,
   Overview,
   Row,
   rowVariants,
@@ -22,9 +25,14 @@ import makeImagePath from '../../utils/makeImagePath.ts';
 const OFFSET = 6;
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const { data, isLoading } = useMovies();
+  const moviePathMatch = useMatch('/movie/:movieId');
+  const { scrollY } = useScroll();
+
+  console.log(moviePathMatch);
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const incraseIndex = () => {
@@ -36,6 +44,10 @@ const HomePage = () => {
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+  const onBoxClick = (movieId: number) => {
+    navigate(`/movie/${movieId}`);
+  };
+  const onOverlayClick = () => navigate(-1);
 
   return (
     <DefaultLayout>
@@ -64,6 +76,8 @@ const HomePage = () => {
                     .map((movie) => (
                       <Box
                         key={movie.id}
+                        layoutId={movie.id + ''}
+                        onClick={() => onBoxClick(movie.id)}
                         bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
                         whileHover="hover"
                         initial="normal"
@@ -79,6 +93,24 @@ const HomePage = () => {
                 </Row>
               </AnimatePresence>
             </Slider>
+            <AnimatePresence>
+              {moviePathMatch ? (
+                <>
+                  <Overlay
+                    layoutId={moviePathMatch.params.movieId}
+                    onClick={onOverlayClick}
+                    exit={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  ></Overlay>
+                  {/*<MovieModal style={{ top: scrollY.get() + 100 }} layoutId={moviePathMatch.params.movieId}>*/}
+                  {/*  hello*/}
+                  {/*</MovieModal>*/}
+                  <MovieModal style={{ top: scrollY.get() + 100 }} layoutId={moviePathMatch.params.movieId}>
+                    hello
+                  </MovieModal>
+                </>
+              ) : null}
+            </AnimatePresence>
           </>
         )}
       </Wrapper>
