@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useMatch } from 'react-router-dom';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
 import { motion, useAnimation, useScroll } from 'framer-motion';
+import { useForm } from 'react-hook-form';
 
 import { Circle, Col, Input, Item, Items, Logo, logoVariants, Nav, navVariants, Search } from './styles.tsx';
 
+interface SearchForm {
+  keyword: string;
+}
+
 const Header = () => {
+  const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch('');
   const tvMatch = useMatch('tv');
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
   const { scrollY } = useScroll();
+  const { register, handleSubmit } = useForm<SearchForm>();
 
   // const toggleSearch = () => setSearchOpen((prev) => !prev);
   const toggleSearch = () => {
@@ -22,6 +29,10 @@ const Header = () => {
       inputAnimation.start({ scaleX: 1 });
     }
     setSearchOpen((prev) => !prev);
+  };
+
+  const onValid = (data: SearchForm) => {
+    navigate(`/search?keyword=${data.keyword}`);
   };
 
   useEffect(() => {
@@ -61,7 +72,7 @@ const Header = () => {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -77,6 +88,7 @@ const Header = () => {
             ></motion.path>
           </motion.svg>
           <Input
+            {...register('keyword', { required: true, minLength: 2 })}
             transition={{ type: 'linear' }}
             // animate={{ scaleX: searchOpen ? 1 : 0 }}
             animate={inputAnimation}

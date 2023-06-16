@@ -120,6 +120,9 @@ export const Overlay = styled(motion.div)`
   align-items: center;
   position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -128,11 +131,10 @@ export const Overlay = styled(motion.div)`
 `;
 
 export const MovieModal = styled(motion.div)`
-  position: fixed;
+  position: absolute;
   width: 40vw;
   height: 80vh;
-  top: 50%;
-  left: 50%;
-  background-color: blue;
-  transform: translate(-50%, -50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 `;
