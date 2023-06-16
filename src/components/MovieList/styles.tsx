@@ -5,6 +5,7 @@ export const MovieListContainer = styled(motion.ul)`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 60px;
+  width: 100%;
   width: var(--max-width);
   margin: 40px auto;
   padding: 0 20px;
