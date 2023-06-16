@@ -2,8 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import App from '../App.tsx';
 import Home from '../pages/Home';
-import TV from '../pages/TV';
-import Search from '../pages/Search';
 
 const router = createBrowserRouter([
   {
@@ -15,20 +13,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: 'home',
+        path: ':type',
         element: <Home />,
-      },
-      {
-        path: 'movie/:movieId',
-        element: <Home />,
-      },
-      {
-        path: 'tv',
-        element: <TV />,
-      },
-      {
-        path: 'search',
-        element: <Search />,
       },
     ],
     // errorElement: <NotFound />,

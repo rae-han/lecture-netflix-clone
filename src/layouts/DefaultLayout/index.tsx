@@ -11,6 +11,7 @@ const DefaultLayout: React.FC<Props> = ({ children }) => {
     <div>
       <Header />
       {children}
+      <div style={{ height: '200vh' }}></div>
     </div>
   );
 };

@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap');
+
+:root {
+  --max-width: 1024px;
+  --c-blue: #0F71F2;
+  --c-gray: #868686;
+  --c-green: #318C07;
+  --c-red: #D92929;
+  --c-yellow: #F2A20C;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #e5e5e5;
+  line-height: 1.2;
+  background-color: black;
+}
+a {
+  text-decoration:none;
+  color:inherit;
+}

@@ -1,3 +1,7 @@
-export default function makeImagePath(id: string, format?: string) {
-  return `https://image.tmdb.org/t/p/${format ? format : 'original'}/${id}`;
+export function makeImagePath(image: string, size = 'w500') {
+  return `https://image.tmdb.org/t/p/${size}${image}`;
+}
+
+export function makeBgImagePath(image: string) {
+  return `https://image.tmdb.org/t/p/original${image}`;
 }

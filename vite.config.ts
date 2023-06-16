@@ -10,7 +10,7 @@ export default defineConfig({
   // plugins: [react(), tsconfigPaths()],
   plugins: [react()],
   server: {
-    port: 8060,
+    port: 3080,
     proxy: {
       'https://api.themoviedb.org/3': {
         target: 'https://api.themoviedb.org/3',

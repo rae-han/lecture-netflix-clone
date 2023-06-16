@@ -4,15 +4,13 @@ import { Outlet, RouterProvider } from 'react-router-dom';
 import { theme } from './styles/theme.ts';
 
 import '@/styles/reset.scss';
+import '@/styles/common.scss';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useRef } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { GlobalStyle } from './components/Global/GlobalStyle.tsx';
-// import Header from './components/Header';
-// import Home from './pages/Home';
-// import DefaultLayout from './layouts/DefaultLayout';
+// import { GlobalStyle } from './components/Global/GlobalStyle.tsx';
 
 function App() {
   const queryClientRef = useRef<QueryClient>();
@@ -23,7 +21,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClientRef.current}>
       <ThemeProvider theme={theme}>
-        <GlobalStyle />
         <Outlet />
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
