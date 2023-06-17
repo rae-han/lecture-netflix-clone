@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useMatch } from 'react-router-dom';
+import { Link, useLocation, useMatch } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 import { Category as CategoryContainer } from './styles.tsx';
@@ -11,12 +11,16 @@ interface Props {
 
 const CategoryItem = ({ item }: Props) => {
   const isMathch = useMatch(item.key);
+  const location = useLocation();
+  const { pathname } = location;
 
   return (
     <CategoryContainer key={item.key}>
       <Link to={`/${item.key}`}>
         <span className="title">{item.key.replace('-', ' ').toUpperCase()}</span>
-        {isMathch ? <motion.span layoutId="category" className="underline"></motion.span> : null}
+        {isMathch || (pathname === '/' && item.id === 0) ? (
+          <motion.span layoutId="category" className="underline"></motion.span>
+        ) : null}
       </Link>
     </CategoryContainer>
   );

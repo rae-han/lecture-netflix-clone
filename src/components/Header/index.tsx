@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMatch } from 'react-router-dom';
 
 import { Categories, Nav } from './styles.tsx';
 import CategoryItem from '../Category';

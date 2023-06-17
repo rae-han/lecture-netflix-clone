@@ -16,6 +16,7 @@ export const MovieDetailContainer = styled(motion.div)<{ backgroundImage: string
   .MovieDetail {
     overflow: hidden;
     position: relative;
+    width: 100%;
     max-width: var(--max-width);
     border-radius: 10px;
     background-color: black;
