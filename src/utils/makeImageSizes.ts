@@ -11,6 +11,5 @@ export const makeImageSizes = (sizes: ImageSizes[] = defaultSizes) => {
   const sizesValue = sizes
     .map((size) => `${size.query ? `(min-width: ${size.query}px) ` : ''}${size.size}px`)
     .join(', ');
-  console.log(sizesValue);
   return sizesValue;
 };
