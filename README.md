@@ -1,15 +1,15 @@
 # 1. 개발 환경
 
 - Apple m1(2022)
-    - OS: MacOS(13.1, ventura)
+  - OS: MacOS(13.1, ventura)
 - Runtime: Node 18.15.0 (with npm@9.5.0)
 - Language: Typescript 5.0.4
 - Libraries and Frameworks
-    - React 18
-    - 데이터 패칭: react-query, axios
-    - ~~상태 관리: recoil(관련 코드 완성 못했음.)~~
-    - 코드 컨벤션: eslint, prettier
-    - 스타일: styled-component, sass
+  - React 18
+  - 데이터 패칭: react-query, axios
+  - ~~상태 관리: recoil(관련 코드 완성 못했음.)~~
+  - 코드 컨벤션: eslint, prettier
+  - 스타일: styled-component, sass
 
 # 2. 실행 방법
 
@@ -46,14 +46,14 @@ IMG_URL=https://image.tmdb.org/t/p
 ```tsx
 // router/index.ts
 {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: ':type?',
-        element: <Home />,
-      },
-			...
+  path: '/',
+          element: <App />,
+        children: [
+  {
+    path: ':type?',
+    element: <Home />,
+  },
+  ...
 }
 ```
 
@@ -148,6 +148,8 @@ export const defaultSizes: ImageSizes[] = [
 
 사실 이 부분을 제대로 구현 못해 버그(전 상세화면 이미지가 보이는 현상)가 있지만 나중에 해결 하거나 누군가에게 도움을 받기 위해 내용만 남깁니다. 상세 화면 이미지 같은 경우 이미지의 크기가 워낙 커서 우선 리스트를 만들 때 쓴 캐시된 이미지를 먼저 보여주고 그 다음 로드가 다 됐을 때 이미지를 보여주려고 했습니다.
 
+구현이 안된 이유는 애니메이션 효과를 주기 위해 상세 모달 컴포넌트 자체를 항상 띄워두고 그 안에 들어가는 내용을 조건처리 해줘서 컴포넌트가 마운트, 언마운트 과정을 거치는 것이 아니라 그 부분을 생각해 봐야 할거 같습니다.
+
 ```tsx
 // components/MovieItem/index.ts
 const onClick = () => {
@@ -162,22 +164,41 @@ const onClick = () => {
 ```tsx
 // components/MovieDetail/index.ts
 // 2. 받는다(여기서 잘 안됨, recoil을 사용하면 될거 같긴 한데.. router를 사용해 보고 싶다)
-const [src, setSrc] = useState(() => makeImagePath(location?.state?.poster_path));
+// 4. 나중에 조금 바꿨다.
+const [imageSrc] = useOptimisticImage(location?.state?.poster_path, movie?.backdrop_path);
+```
 
-// 3. 그리고 원본 이미지 다운이 완료 되면 다시 바꿔 준다.
-useEffect(() => {
-  if (!movie) {
-    return;
-  }
+```tsx
+// hooks/useOptimisticImage.tsx
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-  const img = new Image();
-  img.src = makeImagePath(movie.backdrop_path, 'original');
+import { makeImagePath } from '../utils/makeImagePath.ts';
 
-  img.onload = () => {
-    console.log('이미지 다운 완료');
-    setSrc(img.src);
-  };
-}, [movie]);
+interface UseOptimisticImage {
+  (loadingImage: string, doneImage: string | undefined): [string];
+}
+
+export const useOptimisticImage: UseOptimisticImage = (loadingImage, loadedImage) => {
+  const location = useLocation();
+  const [src, setSrc] = useState(() => makeImagePath(loadingImage));
+
+  useEffect(() => {
+    if (!loadedImage) {
+      return;
+    }
+
+    const img = new Image();
+    img.src = makeImagePath(loadedImage, 'original');
+
+    img.onload = () => {
+      console.log('이미지 다운 완료');
+      setSrc(img.src);
+    };
+  }, [loadedImage]);
+
+  return [src];
+};
 ```
 
 ### 3.2.4. 이미지 지연 로딩
@@ -204,19 +225,19 @@ export const useIntersectionObserver = (movie: Movie) => {
 
       if (imgRef?.current && !src) {
         observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting && imgRef.current) {
-              // ?? 여기서 왜 imgRef.current를 두번 확인해줘야하지?
-              // ?? 타입 좁히기를 한거 같은데 여전히 null이 뜬다..??
-              setSrcSet(makeImageSrcset(movie.poster_path, imageSrcset));
-              setSrc(makeImagePath(movie.poster_path));
+                ([entry]) => {
+                  if (entry.isIntersecting && imgRef.current) {
+                    // ?? 여기서 왜 imgRef.current를 두번 확인해줘야하지?
+                    // ?? 타입 좁히기를 한거 같은데 여전히 null이 뜬다..??
+                    setSrcSet(makeImageSrcset(movie.poster_path, imageSrcset));
+                    setSrc(makeImagePath(movie.poster_path));
 
-              observer.unobserve(imgRef.current);
-            }
-          },
-          {
-            threshold: 0.25,
-          },
+                    observer.unobserve(imgRef.current);
+                  }
+                },
+                {
+                  threshold: 0.25,
+                },
         );
 
         observer.observe(imgRef.current);
@@ -236,6 +257,7 @@ export const useIntersectionObserver = (movie: Movie) => {
 
 1. intersection observer api 를 사용할 때 내부에서 ref.current의 타입 좁히기가 생각처럼 잘 안됐다. 알아봐야 겠다.
 2. 위의 3.2.4 커스텀 훅에서 src, srcSet 리턴 값의 타입에 refObject가 섞여 나왔다.. 알아봐야 겠다.
-    1. 다른분들 커스텀 훅 만드는 것 보고 하나만 해봤는데 문제가 생겼다.. 공부가 더 필요한 것 같다.
+  1. 다른분들 커스텀 훅 만드는 것 보고 하나만 해봤는데 문제가 생겼다.. 공부가 더 필요한 것 같다.
 3. 사이즈에 따라 이미지를 서빙하고 싶을 때 3.2.2 방법 말고도 picture source 태그를 사용하는 방법도 있다. 내 상각엔 이 방법은 브라우저에 맞는 이미지 타입(avif, webp, jpg)을 서빙할 때 더 도움이 될거 같은데 다른 기술 블로그를 찾아보면서 알아봐야 겠다.
 4. 예전에 깃 훅이라는 걸 사용해봐라는 조언을 받았는데 아직 사용 못해보고 있다. 알아봐야 겠다.
+5. 아 그리고 vite 에서 components/ 이런 식으로 말고 @componenets/ ~components 이런 식으로 경로를 설정하고 싶은데 2시간을 쓰고도 못찾았다.. 

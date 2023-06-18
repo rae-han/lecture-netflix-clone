@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export const MovieListContainer = styled(motion.ul)`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 60px;
+  gap: 20px;
   width: 100%;
   max-width: var(--max-width);
   margin: 40px auto;
