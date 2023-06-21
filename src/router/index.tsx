@@ -3,12 +3,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App.tsx';
 import Home from '../pages/Home';
 import Test from '../pages/Test';
-<<<<<<< HEAD
 import First from '../pages/Test/first.tsx';
 import Second from '../pages/Test/second.tsx';
 import Third from '../pages/Test/third.tsx';
-=======
->>>>>>> 59aae27f87f20a60166542c634721767cf6ef0ca
 
 const router = createBrowserRouter([
   {
