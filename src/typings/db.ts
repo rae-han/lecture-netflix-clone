@@ -71,3 +71,13 @@ export interface MovieDetail extends Movie {
   status: string;
   tagline: string;
 }
+
+export interface ImageSrcset {
+  key: string;
+  descriptor: string;
+}
+
+export interface ImageSizes {
+  query?: number;
+  size: number;
+}

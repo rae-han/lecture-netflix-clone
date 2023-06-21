@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useMatch } from 'react-router-dom';
 
 import { Categories, Nav } from './styles.tsx';
 import CategoryItem from '../Category';
 import { Category } from '../../typings/db.ts';
 
-const categories: Category[] = [
+export const categories: Category[] = [
   { id: 0, key: 'popular' },
   { id: 1, key: 'coming-soon' },
   { id: 2, key: 'now-playing' },

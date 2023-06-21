@@ -1,10 +1,12 @@
-import React, { MouseEventHandler, useRef } from 'react';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { MovieDetailContainer } from './styles.tsx';
 import { useMovie } from '../../hooks/queries/movie.ts';
 import { makeImagePath } from '../../utils/makeImagePath.ts';
+import { useOptimisticImage } from '../../hooks/useOptimisticImage.tsx';
+import { useLockScroll } from '../../hooks/useLockScroll.tsx';
 
 const MovieDetail = () => {
   const location = useLocation();
@@ -12,6 +14,8 @@ const MovieDetail = () => {
   const queries = new URLSearchParams(location.search);
   const movieId = queries.get('movieId') ?? '';
   const { data: movie, isLoading } = useMovie(movieId);
+  const [imageSrc] = useOptimisticImage(location?.state?.poster_path, movie?.backdrop_path);
+  useLockScroll();
 
   const onClick: MouseEventHandler = (e) => {
     if (e.currentTarget === e.target) {
@@ -23,11 +27,12 @@ const MovieDetail = () => {
     navigate(-1);
   };
 
-  if (isLoading) {
+  if (isLoading || !movie) {
     return <div>loading...</div>;
   }
 
-  return movieId !== '' && movie ? (
+  // return movieId !== '' && movie ? (
+  return (
     <AnimatePresence>
       <MovieDetailContainer
         onClick={onClick}
@@ -35,7 +40,9 @@ const MovieDetail = () => {
         backgroundImage={makeImagePath(movie.backdrop_path, 'original')}
       >
         <motion.div className="MovieDetail">
-          <img className="MovieDetail__image" src={makeImagePath(movie.backdrop_path, 'original')} alt="" />
+          {/*<img className="MovieDetail__image" src={makeImagePath(movie.backdrop_path, 'original')} alt="" />*/}
+          {/*<img className="MovieDetail__image" src={src} alt="" />*/}
+          <img className="MovieDetail__image" src={imageSrc} alt="" />
           <div className="MovieDetail__image-gradient">
             <button onClick={onBack}>X</button>
           </div>
@@ -51,7 +58,7 @@ const MovieDetail = () => {
         </motion.div>
       </MovieDetailContainer>
     </AnimatePresence>
-  ) : null;
+  );
 };
 
 export default MovieDetail;

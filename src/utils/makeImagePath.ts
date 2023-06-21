@@ -1,7 +1,9 @@
+import { IMG_URL } from '../constants/api.ts';
+
 export function makeImagePath(image: string, size = 'w500') {
-  return `https://image.tmdb.org/t/p/${size}${image}`;
+  return `${IMG_URL}/${size}${image}`;
 }
 
 export function makeBgImagePath(image: string) {
-  return `https://image.tmdb.org/t/p/original${image}`;
+  return `${IMG_URL}/original${image}`;
 }

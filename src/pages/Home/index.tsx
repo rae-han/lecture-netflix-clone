@@ -1,15 +1,19 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import DefaultLayout from '../../layouts/DefaultLayout';
 import MovieList from '../../components/MovieList';
 import MovieDetail from '../../components/MovieDetail';
 
 const HomePage = () => {
+  const location = useLocation();
+  const queries = new URLSearchParams(location.search);
+  const movieId = queries.get('movieId') ?? '';
+
   return (
     <DefaultLayout>
       <MovieList />
-      <MovieDetail />
+      {movieId ? <MovieDetail /> : null}
     </DefaultLayout>
   );
 };

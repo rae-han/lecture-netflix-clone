@@ -10,8 +10,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useRef } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-// import { GlobalStyle } from './components/Global/GlobalStyle.tsx';
-
 function App() {
   const queryClientRef = useRef<QueryClient>();
   if (!queryClientRef.current) {

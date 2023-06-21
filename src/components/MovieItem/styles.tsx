@@ -18,10 +18,15 @@ export const MovieItemContainer = styled(motion.div)`
   }
 
   .movie-title {
+    overflow: hidden;
+    display: -webkit-box;
     margin-top: 16px;
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 `;
 
