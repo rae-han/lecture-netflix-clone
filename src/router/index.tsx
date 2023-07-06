@@ -6,6 +6,8 @@ import Test from '../pages/Test';
 import First from '../pages/Test/first.tsx';
 import Second from '../pages/Test/second.tsx';
 import Third from '../pages/Test/third.tsx';
+import Forth from '../pages/Test/forth.tsx';
+import Fifth from '../pages/Test/fifth.tsx';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
       {
         path: 'test/third',
         element: <Third />,
+      },
+      {
+        path: 'test/forth',
+        element: <Forth />,
+      },
+      {
+        path: 'test/fifth',
+        element: <Fifth />,
       },
     ],
     // errorElement: <NotFound />,

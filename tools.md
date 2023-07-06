@@ -30,10 +30,12 @@ https://fonts.google.com
 
 https://flatuicolors.com/
 
-https://app.src%2Findex.tsx)quicktype.io/?l=ts
+https://quicktype.io/
 
 
 npm install --save react-apexcharts apexcharts
+
+
 
 # recoil
 아톰을 생성
